@@ -424,8 +424,97 @@
       .modal-close { right: 1.5rem; }
     }
   </style>
+
+  <!-- ─── ENHANCEMENT STYLES ─── -->
+  <style>
+    /* Canvas stacking */
+    #dots-canvas { position:fixed; inset:0; z-index:0; pointer-events:none; }
+    .main-content { position:relative; z-index:1; }
+
+    /* Scroll progress bar */
+    #scroll-progress {
+      position:fixed; top:0; left:0; height:2px; width:0%;
+      background:var(--navy); z-index:1000; pointer-events:none;
+    }
+
+    /* Custom cursor — desktop only */
+    #cursor-dot, #cursor-ring {
+      position:fixed; border-radius:50%; pointer-events:none;
+      transform:translate(-50%,-50%); display:none;
+    }
+    #cursor-dot { width:8px; height:8px; background:var(--navy); z-index:9999; }
+    #cursor-ring {
+      width:36px; height:36px; border:1.5px solid var(--navy);
+      opacity:0.35; z-index:9998;
+      transition:width .25s ease, height .25s ease, opacity .25s ease;
+    }
+    #cursor-ring.hovering { width:52px; height:52px; opacity:0.14; }
+    @media (hover:hover) and (pointer:fine) {
+      body, a, button, [onclick], label { cursor:none; }
+      #cursor-dot, #cursor-ring { display:block; }
+    }
+
+    /* Back to top */
+    #back-to-top {
+      position:fixed; bottom:2rem; left:2rem; width:44px; height:44px;
+      background:var(--navy); color:#fff; border:none; font-size:1.15rem;
+      cursor:pointer; z-index:250; font-family:'Plus Jakarta Sans',sans-serif;
+      opacity:0; transform:translateY(8px); pointer-events:none;
+      transition:opacity .3s ease, background .2s, transform .55s cubic-bezier(.23,1,.32,1);
+      display:flex; align-items:center; justify-content:center;
+    }
+    #back-to-top.visible { opacity:1; transform:translateY(0); pointer-events:all; }
+    #back-to-top:hover { background:var(--navy-lt); }
+
+    /* Noise texture overlay */
+    #noise-overlay {
+      position:fixed; inset:0; z-index:2; pointer-events:none; opacity:0.035;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat:repeat; background-size:200px 200px;
+    }
+
+    /* Fade-up scroll reveal */
+    .fade-up {
+      opacity:0; transform:translateY(18px);
+      transition:opacity .55s ease, transform .55s ease;
+      will-change:opacity, transform;
+    }
+    .fade-up.in-view { opacity:1; transform:translateY(0); }
+    @media (prefers-reduced-motion:reduce) {
+      .fade-up { opacity:1 !important; transform:none !important; transition:none !important; }
+    }
+
+    /* Hero word reveal */
+    .hero-word {
+      display:inline-block; opacity:0; transform:translateY(14px);
+      animation:wordUp .55s cubic-bezier(.23,1,.32,1) forwards;
+    }
+    @keyframes wordUp { to { opacity:1; transform:translateY(0); } }
+    @media (prefers-reduced-motion:reduce) { .hero-word { opacity:1; transform:none; animation:none; } }
+
+    /* Experience: keyboard focus ring + spotlight dimming */
+    .exp-item { transition:opacity .25s ease; outline:none; }
+    .exp-item:focus-visible { outline:2px solid var(--navy); outline-offset:-2px; }
+    @media (hover:hover) {
+      .exp-list:has(.exp-item:hover) .exp-item:not(:hover),
+      .exp-list:has(.exp-item:focus-within) .exp-item:not(:focus-within) { opacity:.45; }
+    }
+
+    /* Magnetic spring-back (transform added to existing resume-link transition) */
+    .resume-link {
+      transition:color .2s, border-color .2s, transform .55s cubic-bezier(.23,1,.32,1);
+    }
+  </style>
 </head>
 <body>
+
+<!-- ─── ENHANCEMENT ELEMENTS ─── -->
+<canvas id="dots-canvas" aria-hidden="true"></canvas>
+<div id="cursor-dot" aria-hidden="true"></div>
+<div id="cursor-ring" aria-hidden="true"></div>
+<div id="scroll-progress" aria-hidden="true"></div>
+<div id="noise-overlay" aria-hidden="true"></div>
+<button id="back-to-top" aria-label="Back to top">↑</button>
 
 <!-- ─── SIDE NAV ─── -->
 <nav class="sidenav" id="sidenav">
@@ -460,7 +549,7 @@
         <span class="home-meta-major">Computer Engineering</span>
         <span class="home-meta-school">Purdue University</span>
       </div>
-      <a class="resume-link" href="resume.pdf" target="_blank">
+      <a class="resume-link" href="Nakul_Iyer.pdf" target="_blank">
         My Resume <span class="arr">↗</span>
       </a>
     </div>
@@ -640,7 +729,7 @@
           <span class="contact-arr">↗</span>
         </span>
       </a>
-      <a class="contact-item" href="resume.pdf" target="_blank">
+      <a class="contact-item" href="Nakul_Iyer.pdf" target="_blank">
         <span class="contact-platform">Resume</span>
         <span class="contact-right">
           <span class="contact-val">Download PDF</span>
@@ -745,6 +834,245 @@ function closeMobNav() { document.getElementById('mob-nav').classList.remove('op
 document.getElementById('mob-toggle').addEventListener('click', () => document.getElementById('mob-nav').classList.add('open'));
 document.getElementById('mob-close').addEventListener('click', closeMobNav);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProject(); });
+</script>
+
+<!-- ─── ENHANCEMENTS ─── -->
+<script>
+(function () {
+  'use strict';
+
+  var reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasFine  = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  /* ── SCROLL PROGRESS ── */
+  var prog = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', function () {
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    prog.style.width = (h > 0 ? Math.min(window.scrollY / h * 100, 100) : 0) + '%';
+  }, { passive: true });
+
+  /* ── BACK TO TOP ── */
+  var backBtn = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function () {
+    backBtn.classList.toggle('visible', window.scrollY > 600);
+  }, { passive: true });
+  backBtn.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  /* ── CUSTOM CURSOR (desktop only) ── */
+  if (hasFine && !reduced) {
+    var dot  = document.getElementById('cursor-dot');
+    var ring = document.getElementById('cursor-ring');
+    var mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', function (e) { mx = e.clientX; my = e.clientY; });
+    (function tick() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      dot.style.left  = mx + 'px'; dot.style.top  = my + 'px';
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(tick);
+    })();
+    document.querySelectorAll('a, button, [onclick], .exp-item, .proj-card').forEach(function (el) {
+      el.addEventListener('mouseenter', function () { ring.classList.add('hovering'); });
+      el.addEventListener('mouseleave', function () { ring.classList.remove('hovering'); });
+    });
+  }
+
+  /* ── MAGNETIC ELEMENTS (desktop only) ── */
+  if (hasFine && !reduced) {
+    function addMagnet(el, thr, str) {
+      if (!el) return;
+      thr = thr || 80; str = str || 0.32;
+      el.addEventListener('mousemove', function (e) {
+        var rect = el.getBoundingClientRect();
+        var dx = e.clientX - (rect.left + rect.width  / 2);
+        var dy = e.clientY - (rect.top  + rect.height / 2);
+        var dist = Math.hypot(dx, dy);
+        if (dist < thr) {
+          var f = (1 - dist / thr) * str;
+          el.style.transform = 'translate(' + (dx * f) + 'px,' + (dy * f) + 'px)';
+        }
+      });
+      el.addEventListener('mouseleave', function () { el.style.transform = ''; });
+    }
+    addMagnet(document.querySelector('.resume-link'));
+    addMagnet(backBtn, 60, 0.25);
+  }
+
+  /* ── FLOATING DOTS + CONSTELLATION ── */
+  var canvas = document.getElementById('dots-canvas');
+  var ctx    = canvas.getContext('2d');
+  var COLORS = [
+    'rgba(30,58,110,0.22)',
+    'rgba(46,80,138,0.18)',
+    'rgba(107,122,153,0.18)'
+  ];
+  var LINE_R = 120, REPEL_R = 150;
+  var dots = [];
+  var mouse = { x: -9999, y: -9999 };
+
+  function spawnDots() {
+    var n = Math.min(80, Math.round(canvas.width * canvas.height / 14000));
+    dots = [];
+    for (var i = 0; i < n; i++) {
+      dots.push({
+        x:  Math.random() * canvas.width,
+        y:  Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        r:  Math.random() * 1.8 + 1.2,
+        c:  COLORS[i % COLORS.length]
+      });
+    }
+  }
+
+  function resizeCanvas() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    spawnDots();
+  }
+
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(resizeCanvas, 180);
+  });
+
+  document.addEventListener('mousemove',  function (e) { mouse.x = e.clientX; mouse.y = e.clientY; });
+  document.addEventListener('mouseleave', function ()  { mouse.x = -9999;      mouse.y = -9999; });
+
+  function drawFrame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    /* Constellation lines (O(n²) with fast early-exit) */
+    for (var i = 0; i < dots.length; i++) {
+      for (var j = i + 1; j < dots.length; j++) {
+        var ldx = dots[i].x - dots[j].x;
+        if (Math.abs(ldx) > LINE_R) continue;
+        var ldy = dots[i].y - dots[j].y;
+        if (Math.abs(ldy) > LINE_R) continue;
+        var ld = Math.hypot(ldx, ldy);
+        if (ld < LINE_R) {
+          ctx.beginPath();
+          ctx.moveTo(dots[i].x, dots[i].y);
+          ctx.lineTo(dots[j].x, dots[j].y);
+          ctx.strokeStyle = 'rgba(30,58,110,' + ((1 - ld / LINE_R) * 0.11) + ')';
+          ctx.lineWidth   = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+
+    /* Update + draw dots */
+    for (var k = 0; k < dots.length; k++) {
+      var d = dots[k];
+      if (!reduced) {
+        var mdx  = d.x - mouse.x;
+        var mdy  = d.y - mouse.y;
+        var mdst = Math.hypot(mdx, mdy);
+        if (mdst < REPEL_R && mdst > 0) {
+          var force = (1 - mdst / REPEL_R) * 1.8;
+          d.x += (mdx / mdst) * force;
+          d.y += (mdy / mdst) * force;
+        }
+        d.x += d.vx; d.y += d.vy;
+        if (d.x < -10)             d.x = canvas.width  + 10;
+        if (d.x > canvas.width+10) d.x = -10;
+        if (d.y < -10)             d.y = canvas.height + 10;
+        if (d.y > canvas.height+10)d.y = -10;
+      }
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = d.c;
+      ctx.fill();
+    }
+    requestAnimationFrame(drawFrame);
+  }
+
+  resizeCanvas();
+  drawFrame();
+
+  /* ── FADE-UP ON SCROLL (IntersectionObserver) ── */
+  if (!reduced && 'IntersectionObserver' in window) {
+    var fadeTargets = Array.prototype.slice.call(
+      document.querySelectorAll('.section-title-box, .exp-item, .proj-card, .contact-item, .home-meta')
+    );
+    fadeTargets.forEach(function (el) {
+      /* Stagger by sibling index within parent */
+      var siblings = Array.prototype.slice.call(el.parentElement.children).filter(function (s) {
+        return s.classList.contains('exp-item')    ||
+               s.classList.contains('proj-card')   ||
+               s.classList.contains('contact-item');
+      });
+      var idx = Math.max(0, siblings.indexOf(el));
+      el.classList.add('fade-up');
+      el.style.transitionDelay = (idx * 70) + 'ms';
+    });
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('in-view');
+          /* Clear delay after reveal so hover/spotlight transitions aren't delayed */
+          setTimeout(function () { e.target.style.transitionDelay = ''; }, 900);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        fadeTargets.forEach(function (el) { io.observe(el); });
+      });
+    });
+  }
+
+  /* ── HERO WORD REVEAL ── */
+  if (!reduced) {
+    var delay = 0;
+    var greeting = document.querySelector('.home-greeting');
+    if (greeting) {
+      greeting.innerHTML = greeting.textContent.trim().split(' ').map(function (w) {
+        var s = '<span class="hero-word" style="animation-delay:' + delay + 'ms">' + w + '</span>';
+        delay += 65;
+        return s;
+      }).join(' ');
+    }
+    var nameHl = document.querySelector('.name-hl');
+    if (nameHl) {
+      nameHl.style.cssText += ';opacity:0;transform:translateY(14px);' +
+        'animation:wordUp .55s cubic-bezier(.23,1,.32,1) ' + delay + 'ms forwards';
+      delay += 65;
+    }
+    var nameEnd = document.querySelector('.home-name-row span:last-child');
+    if (nameEnd) {
+      nameEnd.style.cssText += ';display:inline-block;opacity:0;transform:translateY(14px);' +
+        'animation:wordUp .55s cubic-bezier(.23,1,.32,1) ' + delay + 'ms forwards';
+    }
+  }
+
+  /* ── EXPERIENCE: KEYBOARD + ARIA ACCESSIBILITY ── */
+  document.querySelectorAll('.exp-item').forEach(function (item) {
+    item.setAttribute('tabindex', '0');
+    item.setAttribute('role', 'button');
+    item.setAttribute('aria-expanded', 'false');
+    item.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleExp(item);
+      }
+    });
+  });
+
+  /* Extend existing toggleExp to also update aria-expanded */
+  var _orig = window.toggleExp;
+  window.toggleExp = function (el) {
+    _orig(el);
+    el.setAttribute('aria-expanded', String(el.classList.contains('open')));
+  };
+
+})();
 </script>
 </body>
 </html>
