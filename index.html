@@ -70,25 +70,14 @@
       pointer-events: none; transform: translate(-50%,-50%);
       z-index: 19000; display: none;
     }
-    #cursor-dot { width: 6px; height: 6px; background: var(--warm); z-index: 19001; }
+    #cursor-dot { width: 6px; height: 6px; background: var(--ink); z-index: 19001; }
     #cursor-ring {
-      width: 34px; height: 34px;
-      border: 1.5px solid rgba(42,31,26,0.3);
-      display: flex; align-items: center; justify-content: center;
-      transition: width .25s var(--ease), height .25s var(--ease),
-                  background .25s ease, border-color .25s ease;
+      width: 32px; height: 32px;
+      border: 1.5px solid rgba(42,31,26,.32);
     }
-    #cursor-ring.on-link  { width: 56px; height: 56px; background: rgba(255,179,112,.15); border-color: rgba(255,179,112,.7); }
-    #cursor-ring.on-card  { width: 88px; height: 88px; background: rgba(255,179,112,.1);  border-color: rgba(255,179,112,.5); }
-    #cursor-text {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 8px; letter-spacing: .1em; text-transform: uppercase;
-      color: var(--ink); opacity: 0; transition: opacity .2s;
-    }
-    #cursor-ring.on-card #cursor-text { opacity: 1; }
     @media (hover:hover) and (pointer:fine) {
       body, a, button, [role="button"], [onclick] { cursor: none; }
-      #cursor-dot, #cursor-ring { display: flex; }
+      #cursor-dot, #cursor-ring { display: block; }
     }
 
     /* ── FIXED UI ── */
@@ -106,8 +95,6 @@
       60%{background-position:15px 0}70%{background-position:0 15px}80%{background-position:3px 35px}90%{background-position:-10px 10px}
     }
     @media (prefers-reduced-motion:reduce) { #noise-overlay { animation:none; } }
-
-    #click-burst-layer { position: fixed; inset: 0; pointer-events: none; z-index: 18000; }
 
     #scroll-progress {
       position: fixed; top: 0; left: 0; height: 2px; width: 0%;
@@ -396,14 +383,13 @@
     /* ── PROJECTS ── */
     .proj-grid {
       display: grid; grid-template-columns: repeat(2,1fr);
-      gap: 16px; perspective: 1200px;
+      gap: 16px;
     }
     .proj-card {
       background: var(--surf); border: 1px solid var(--bdr);
       padding: 2.25rem 2rem; cursor: pointer;
       display: flex; flex-direction: column; gap: 1.5rem;
       position: relative; overflow: hidden;
-      transform-style: preserve-3d;
       transition: box-shadow .3s ease;
     }
     .proj-card:hover { box-shadow: 0 16px 60px rgba(42,31,26,.1); }
@@ -495,17 +481,6 @@
     .modal-gh:hover { opacity: .7; }
 
     /* ── CONTACT ── */
-    #contact { position: relative; }
-    .flashlight-overlay {
-      position: absolute; inset: 0; pointer-events: none; z-index: 0;
-      background: radial-gradient(
-        circle 180px at var(--fx,50%) var(--fy,50%),
-        transparent 0%, rgba(42,31,26,.82) 100%
-      );
-      opacity: 0; transition: opacity .45s ease;
-    }
-    #contact:hover .flashlight-overlay { opacity: 1; }
-    .contact-inner { position: relative; z-index: 1; }
     .contact-wrap { max-width: 720px; }
     .contact-item {
       display: flex; justify-content: space-between; align-items: center;
@@ -586,12 +561,9 @@
   </div>
 </div>
 
-<!-- CLICK BURST LAYER -->
-<div id="click-burst-layer" aria-hidden="true"></div>
-
 <!-- CURSOR -->
 <div id="cursor-dot" aria-hidden="true"></div>
-<div id="cursor-ring" aria-hidden="true"><span id="cursor-text">view</span></div>
+<div id="cursor-ring" aria-hidden="true"></div>
 
 <!-- FIXED UI -->
 <div id="scroll-progress" aria-hidden="true"></div>
@@ -627,14 +599,14 @@
     <div class="blob blob-2" aria-hidden="true"></div>
 
     <div class="hero-body">
-      <p class="hero-eyebrow h-el" id="hero-eyebrow">Portfolio &middot; 2025</p>
+      <p class="hero-eyebrow h-el" id="hero-eyebrow">Portfolio &middot; 2026</p>
       <h1 class="hero-name h-el" id="hero-name">Nakul Iyer</h1>
       <div class="hero-role h-el">
         <span>I&rsquo;m a&nbsp;</span><span class="role-word" id="role-word">engineer</span>
       </div>
       <div class="hero-meta h-el">
         <span class="hero-school">Computer Engineering &middot; Purdue University</span>
-        <a class="btn mag-el" href="Nakul_Iyer.pdf" target="_blank">
+        <a class="btn mag-el" href="Iyer_Nakul_Resume_August_2026.pdf" target="_blank" rel="noopener noreferrer" download>
           <span>My Resume</span><span class="arr">↗</span>
         </a>
       </div>
@@ -651,19 +623,19 @@
         <span>Computer Engineering</span><span class="sep">&middot;</span>
         <span>Flutter + Firebase</span><span class="sep">&middot;</span>
         <span>MERN Stack</span><span class="sep">&middot;</span>
-        <span>Machine Learning</span><span class="sep">&middot;</span>
-        <span>Research</span><span class="sep">&middot;</span>
+        <span>Python</span><span class="sep">&middot;</span>
+        <span>R</span><span class="sep">&middot;</span>
         <span>Purdue University</span><span class="sep">&middot;</span>
-        <span>R &amp; Bioinformatics</span><span class="sep">&middot;</span>
-        <span>Redis</span><span class="sep">&middot;</span>
+        <span>React</span><span class="sep">&middot;</span>
+        <span>Docker</span><span class="sep">&middot;</span>
         <span>Computer Engineering</span><span class="sep">&middot;</span>
         <span>Flutter + Firebase</span><span class="sep">&middot;</span>
         <span>MERN Stack</span><span class="sep">&middot;</span>
-        <span>Machine Learning</span><span class="sep">&middot;</span>
-        <span>Research</span><span class="sep">&middot;</span>
+        <span>Python</span><span class="sep">&middot;</span>
+        <span>R</span><span class="sep">&middot;</span>
         <span>Purdue University</span><span class="sep">&middot;</span>
-        <span>R &amp; Bioinformatics</span><span class="sep">&middot;</span>
-        <span>Redis</span><span class="sep">&middot;</span>
+        <span>React</span><span class="sep">&middot;</span>
+        <span>Docker</span><span class="sep">&middot;</span>
       </div>
     </div>
   </section>
@@ -688,7 +660,7 @@
           </div>
         </div>
         <div class="exp-body"><div class="exp-body-inner">
-          Leading a team of 8 students to develop a gamified early literacy application for the Boys &amp; Girls Club of Northern Indiana, aligned to the UFLI phonics curriculum. Engineering core features using Flutter + Firebase — sound identification exercises, CVC word construction, guided tracing interfaces, diagnostic placement logic, and a level-based reward progression system with scalable backend data models tracking individual student progress.
+          Leads a team of 8 students building a gamified early-literacy app for the Boys &amp; Girls Club of Northern Indiana Corridor, aligned to the UFLI phonics curriculum. Flutter + Firebase — sound-ID exercises, CVC word construction, guided tracing, diagnostic placement, level-based reward progression. Scalable backend models track student progress and adaptive learning pathways.
         </div></div>
       </div>
 
@@ -704,23 +676,7 @@
           </div>
         </div>
         <div class="exp-body"><div class="exp-body-inner">
-          Designing and building full-stack MERN solutions for Sleep Pod, a UK-based nonprofit homelessness initiative. Integrated a MongoDB database layer with user schemas enabling scalable authentication, and engineered middleware pipelines — including a Redis-powered rate limiter — to strengthen application security and improve community impact.
-        </div></div>
-      </div>
-
-      <div class="exp-item" onclick="toggleExp(this)" tabindex="0" role="button" aria-expanded="false">
-        <div class="exp-header">
-          <div class="exp-left">
-            <span class="exp-company">Purdue Claude Builder Club</span>
-            <span class="exp-role">Operations Lead</span>
-          </div>
-          <div class="exp-right">
-            <span class="exp-date">Sep 2025 &mdash; Present</span>
-            <span class="exp-toggle">+</span>
-          </div>
-        </div>
-        <div class="exp-body"><div class="exp-body-inner">
-          Led planning and execution of Purdue's first-ever Build-A-Thon, backed by Anthropic, driving student engagement in applied AI projects. Prototypes and debugs application features using Claude Console, integrating AI-powered tooling into club projects and member workflows.
+          Internal operations platform for Sleep Pod, a UK nonprofit distributing insulated sleeping pods across the UK and Europe. MERN stack, replacing fragmented WhatsApp, email, and spreadsheet workflows. Analytics module — Apache ECharts, dual-party data verification, system-generated events for prison partners — visualizing production, materials, and geographic distribution. Real-time pending/history event pipeline: React, Node, Express, MongoDB, Stream Chat API, FullCalendar, ECharts, with role-based views, dispute detection, admin override, and multi-filter.
         </div></div>
       </div>
 
@@ -736,7 +692,7 @@
           </div>
         </div>
         <div class="exp-body"><div class="exp-body-inner">
-          Developed AutoFocus, a hierarchical clustering model identifying diseased biomolecular modules across multiple biological scales. Engineered an interactive R-based visualization tool for multi-omic data exploration and validated results on biomedical datasets, uncovering modules linked to Alzheimer's disease — presented to 40+ researchers at the Mount Sinai Center for Computational Psychiatry.
+          Contributed to AutoFocus, an R-based hierarchical clustering model organizing multi-omic biomolecules into correlation-based trees and testing phenotype enrichment across every internal node. Built interactive R/Shiny tools for exploring enriched disease-associated modules, functional annotations, and phenotype drivers. Applied to ROS/MAP Alzheimer's brain metabolomics and proteomics — identified multi-scale modules linked to neurofibrillary tangles and cognitive decline.
         </div></div>
       </div>
 
@@ -753,18 +709,7 @@
 
       <div class="proj-card" onclick="openProject(0)">
         <div class="card-halo" aria-hidden="true"></div>
-        <span class="proj-index">01 / 05</span>
-        <p class="proj-name">Early Literacy App</p>
-        <div class="proj-icons">
-          <img class="proj-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg" alt="Flutter" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'proj-icon-text',textContent:this.alt}))" />
-          <img class="proj-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-plain.svg" alt="Firebase" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'proj-icon-text',textContent:this.alt}))" />
-          <span class="proj-icon-text">Dart</span>
-        </div>
-      </div>
-
-      <div class="proj-card" onclick="openProject(1)">
-        <div class="card-halo" aria-hidden="true"></div>
-        <span class="proj-index">02 / 05</span>
+        <span class="proj-index">01 / 02</span>
         <p class="proj-name">ML Image Classification</p>
         <div class="proj-icons">
           <img class="proj-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'proj-icon-text',textContent:this.alt}))" />
@@ -774,9 +719,9 @@
         </div>
       </div>
 
-      <div class="proj-card" onclick="openProject(2)">
+      <div class="proj-card" onclick="openProject(1)">
         <div class="card-halo" aria-hidden="true"></div>
-        <span class="proj-index">03 / 05</span>
+        <span class="proj-index">02 / 02</span>
         <p class="proj-name">Gem Hunters &mdash; RL Experiment</p>
         <div class="proj-icons">
           <img class="proj-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JavaScript" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'proj-icon-text',textContent:this.alt}))" />
@@ -786,35 +731,11 @@
         </div>
       </div>
 
-      <div class="proj-card" onclick="openProject(3)">
-        <div class="card-halo" aria-hidden="true"></div>
-        <span class="proj-index">04 / 05</span>
-        <p class="proj-name">AutoFocus &mdash; Clustering Model</p>
-        <div class="proj-icons">
-          <img class="proj-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/r/r-original.svg" alt="R" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'proj-icon-text',textContent:this.alt}))" />
-          <span class="proj-icon-text">Tidyverse</span>
-          <span class="proj-icon-text">ggplot2</span>
-        </div>
-      </div>
-
-      <div class="proj-card" onclick="openProject(4)">
-        <div class="card-halo" aria-hidden="true"></div>
-        <span class="proj-index">05 / 05</span>
-        <p class="proj-name">Sleep Pod &mdash; Nonprofit Platform</p>
-        <div class="proj-icons">
-          <img class="proj-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" alt="MongoDB" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'proj-icon-text',textContent:this.alt}))" />
-          <img class="proj-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="React" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'proj-icon-text',textContent:this.alt}))" />
-          <img class="proj-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" alt="Node.js" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'proj-icon-text',textContent:this.alt}))" />
-          <img class="proj-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg" alt="Redis" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'proj-icon-text',textContent:this.alt}))" />
-        </div>
-      </div>
-
     </div>
   </section>
 
   <!-- CONTACT -->
   <section class="page-section" id="contact">
-    <div class="flashlight-overlay" id="flashlight" aria-hidden="true"></div>
     <div class="contact-inner">
       <div class="section-header">
         <span class="section-num">03</span>
@@ -828,10 +749,17 @@
             <span class="contact-arr">↗</span>
           </span>
         </a>
-        <a class="contact-item" href="https://linkedin.com/in/iyernakul" target="_blank" rel="noopener">
+        <a class="contact-item" href="https://linkedin.com/in/iyernakul/" target="_blank" rel="noopener noreferrer">
           <span class="contact-platform">LinkedIn</span>
           <span class="contact-right">
             <span class="contact-val">linkedin.com/in/iyernakul</span>
+            <span class="contact-arr">↗</span>
+          </span>
+        </a>
+        <a class="contact-item" href="https://github.com/naks123" target="_blank" rel="noopener noreferrer">
+          <span class="contact-platform">GitHub</span>
+          <span class="contact-right">
+            <span class="contact-val">github.com/naks123</span>
             <span class="contact-arr">↗</span>
           </span>
         </a>
@@ -842,7 +770,7 @@
             <span class="contact-arr">↗</span>
           </span>
         </a>
-        <a class="contact-item" href="Nakul_Iyer.pdf" target="_blank">
+        <a class="contact-item" href="Iyer_Nakul_Resume_August_2026.pdf" target="_blank" rel="noopener noreferrer" download>
           <span class="contact-platform">Resume</span>
           <span class="contact-right">
             <span class="contact-val">Download PDF</span>
@@ -859,7 +787,7 @@
   </section>
 
   <footer class="site-footer">
-    <span>&copy; 2025 Nakul Iyer</span>
+    <span>&copy; 2026 Nakul Iyer</span>
     <span>Purdue University &middot; Computer Engineering</span>
   </footer>
 
@@ -881,11 +809,8 @@
 <script>
 /* ── PROJECTS DATA ── */
 var PROJECTS = [
-  { name:'Early Literacy App', org:'EPICS @ Purdue University', desc:'A gamified early literacy app built for the Boys & Girls Club of Northern Indiana, aligned to the UFLI phonics curriculum. Features include sound identification exercises, CVC word construction, guided tracing interfaces, diagnostic placement logic, and level-based reward progression. A scalable Firebase backend tracks each student\'s progress.', tech:['Flutter','Firebase','Dart'], github:null },
-  { name:'ML Image Classification', org:'Personal Project', desc:'Implemented K-Nearest Neighbors, Decision Trees, and Logistic Regression classifiers entirely from scratch in Python to classify images from extracted features. Designed full preprocessing pipelines — feature standardization, train/validation/test splits, and hyperparameter tuning — then evaluated and compared accuracy across all algorithms.', tech:['Python','NumPy','pandas','Matplotlib','scikit-learn'], github:'https://github.com/yourusername/ml-classification' },
-  { name:'Gem Hunters — RL Experiment', org:'Weill Cornell / Mount Sinai', desc:'A web-based multidimensional reinforcement learning task where 100+ participants completed 216 trials each, learning reward rules that changed between rounds. Deployed via Prolific; statistical results were presented to 40+ professors, PhD students, and researchers at the Mount Sinai Center for Computational Psychiatry.', tech:['JavaScript','jsPsych','Node.js','Python'], github:'https://github.com/yourusername/gem-hunters' },
-  { name:'AutoFocus — Clustering Model', org:'Weill Cornell Medicine', desc:'Developed AutoFocus, a hierarchical clustering model that identifies diseased biomolecular modules across multiple biological scales. Engineered an interactive visualization tool in R for exploring multi-omic data modules and validated results on biomedical datasets, surfacing modules linked to Alzheimer\'s disease.', tech:['R','Tidyverse','ggplot2','Bioinformatics'], github:null },
-  { name:'Sleep Pod — Nonprofit Platform', org:'Hack the Future', desc:'Full-stack MERN application for Sleep Pod, a UK-based nonprofit homelessness initiative. Designed a MongoDB database layer with user schemas for scalable authentication, and built middleware pipelines — including a Redis-powered rate limiter — to strengthen security.', tech:['MongoDB','Express.js','React','Node.js','Redis'], github:'https://github.com/yourusername/sleep-pod' }
+  { name:'ML Image Classification', org:'Nov 2025 — Present', desc:'K-Nearest Neighbors, Decision Trees (information gain), and Logistic Regression — implemented from scratch to classify images from extracted features. Preprocessing pipelines: feature standardization, train/validation/test splits, hyperparameter tuning.', tech:['Python','NumPy','pandas','Matplotlib'], github:null },
+  { name:'Gem Hunters — RL Experiment', org:'Jun 2024 — Aug 2024', desc:'A web-based multidimensional reinforcement learning task in jsPsych — 216 trials per participant, reward rules changing between rounds. Randomized experiment logic, 80/20 probabilistic reward schedules, reaction-time logging across 20,000+ trials. Deployed to 100+ participants via Prolific; presented to 40+ researchers at Mount Sinai.', tech:['Python','JavaScript','jsPsych','Node.js'], github:null }
 ];
 
 function openProject(i) {
@@ -939,7 +864,6 @@ document.addEventListener('keydown', function(e) {
   'use strict';
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var hasFine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  var COLORS  = ['#FFB370','#A8B5FF','#B8E6D2','#FFE9A8'];
 
   /* ── LENIS ── */
   var lenis;
@@ -982,7 +906,7 @@ document.addEventListener('keydown', function(e) {
             h < 17 ? 'good afternoon' :
             h < 21 ? 'good evening' : 'good night';
     var el = document.getElementById('hero-eyebrow');
-    if (el) el.textContent = g + ' · nakul iyer · 2025';
+    if (el) el.textContent = g + ' · nakul iyer · 2026';
   })();
 
   /* ── HERO NAME LETTER SPLIT ── */
@@ -1044,75 +968,7 @@ document.addEventListener('keydown', function(e) {
       ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
       requestAnimationFrame(tick);
     })();
-    function setState(s) { ring.classList.remove('on-link','on-card'); if(s) ring.classList.add(s); }
-    document.querySelectorAll('a, button, [role="button"]').forEach(function(el) {
-      el.addEventListener('mouseenter', function(){ setState('on-link'); });
-      el.addEventListener('mouseleave', function(){ setState(null); });
-    });
-    document.querySelectorAll('.proj-card').forEach(function(el) {
-      el.addEventListener('mouseenter', function(){ setState('on-card'); });
-      el.addEventListener('mouseleave', function(){ setState(null); });
-    });
   }
-
-  /* ── PARTICLE BURST ── */
-  var layer    = document.getElementById('click-burst-layer');
-  var lastBurst = 0;
-  function burst(x, y, cnt) {
-    if (reduced) return;
-    var now = Date.now();
-    if (now - lastBurst < 80) return;
-    lastBurst = now;
-    var n = cnt || (Math.floor(Math.random() * 7) + 18);
-    for (var i = 0; i < n; i++) {
-      var angle = Math.random() * Math.PI * 2;
-      var spd   = 80 + Math.random() * 90;
-      var sz    = 4  + Math.random() * 9;
-      var dur   = 600 + Math.random() * 300;
-      var col   = COLORS[Math.floor(Math.random() * COLORS.length)];
-      var roll  = Math.random();
-      var p;
-      if (roll < .6) {
-        p = document.createElement('span');
-        p.style.cssText = 'position:fixed;border-radius:50%;width:'+sz+'px;height:'+sz+'px;background:'+col+';left:'+x+'px;top:'+y+'px;pointer-events:none;';
-      } else if (roll < .82) {
-        p = document.createElementNS('http://www.w3.org/2000/svg','svg');
-        p.setAttribute('width', sz*2.2); p.setAttribute('height', sz*2.2); p.setAttribute('viewBox','-10 -10 20 20');
-        p.style.cssText = 'position:fixed;left:'+x+'px;top:'+y+'px;pointer-events:none;overflow:visible;';
-        var path = document.createElementNS('http://www.w3.org/2000/svg','path');
-        path.setAttribute('d','M0,-8 L2,-2 L8,0 L2,2 L0,8 L-2,2 L-8,0 L-2,-2 Z');
-        path.setAttribute('fill',col); p.appendChild(path);
-      } else {
-        p = document.createElementNS('http://www.w3.org/2000/svg','svg');
-        p.setAttribute('width', sz*2.2); p.setAttribute('height', sz*2.2); p.setAttribute('viewBox','-10 -10 20 20');
-        p.style.cssText = 'position:fixed;left:'+x+'px;top:'+y+'px;pointer-events:none;overflow:visible;';
-        var star = document.createElementNS('http://www.w3.org/2000/svg','polygon');
-        star.setAttribute('points','0,-8 1.9,-2.6 7.6,-2.6 3.1,1 4.7,6.5 0,3.5 -4.7,6.5 -3.1,1 -7.6,-2.6 -1.9,-2.6');
-        star.setAttribute('fill',col); p.appendChild(star);
-      }
-      layer.appendChild(p);
-      var tx = Math.cos(angle)*spd, ty = Math.sin(angle)*spd;
-      var rot = (Math.random()-.5)*720;
-      var anim = p.animate([
-        { transform:'translate(-50%,-50%) scale(1)', opacity:1 },
-        { transform:'translate(calc(-50% + '+tx+'px),calc(-50% + '+ty+'px)) rotate('+rot+'deg) scale(.3)', opacity:0 }
-      ], { duration:dur, easing:'cubic-bezier(.25,.46,.45,.94)', fill:'forwards' });
-      (function(el){ anim.onfinish = function(){ el.remove(); }; })(p);
-    }
-  }
-  document.addEventListener('click', function(e){ burst(e.clientX, e.clientY); });
-
-  /* ── KONAMI CODE ── */
-  var KK = [38,38,40,40,37,39,37,39,66,65], ki = 0;
-  document.addEventListener('keydown', function(e) {
-    ki = (e.keyCode === KK[ki]) ? ki+1 : 0;
-    if (ki === KK.length) {
-      ki = 0;
-      for (var i = 0; i < 12; i++) (function(i){
-        setTimeout(function(){ burst(Math.random()*window.innerWidth, Math.random()*window.innerHeight, 40); }, i*80);
-      })(i);
-    }
-  });
 
   /* ── LETTER SKEW ── */
   if (hasFine && !reduced) {
@@ -1130,20 +986,14 @@ document.addEventListener('keydown', function(e) {
     });
   }
 
-  /* ── 3D TILT + HOVER HALO ── */
+  /* ── PROJECT CARD HOVER HALO ── */
   if (hasFine && !reduced) {
     document.querySelectorAll('.proj-card').forEach(function(card) {
-      card.addEventListener('mouseenter', function(){ card.style.transition = 'box-shadow .3s ease'; });
       card.addEventListener('mousemove', function(e) {
         var r = card.getBoundingClientRect();
         var x = (e.clientX-r.left)/r.width, y = (e.clientY-r.top)/r.height;
-        card.style.transform = 'rotateX('+((y-.5)*-8)+'deg) rotateY('+((x-.5)*8)+'deg)';
         var h = card.querySelector('.card-halo');
         if (h) { h.style.setProperty('--hx',(x*100)+'%'); h.style.setProperty('--hy',(y*100)+'%'); }
-      });
-      card.addEventListener('mouseleave', function() {
-        card.style.transition = 'transform .6s cubic-bezier(.23,1,.32,1), box-shadow .3s ease';
-        card.style.transform  = '';
       });
     });
   }
@@ -1160,18 +1010,6 @@ document.addEventListener('keydown', function(e) {
       el.addEventListener('mouseleave', function(){ el.style.transform=''; });
     });
   }
-
-  /* ── FLASHLIGHT ── */
-  (function() {
-    var sec = document.getElementById('contact');
-    var ov  = document.getElementById('flashlight');
-    if (!sec || !ov) return;
-    sec.addEventListener('mousemove', function(e) {
-      var r = sec.getBoundingClientRect();
-      ov.style.setProperty('--fx', ((e.clientX-r.left)/r.width*100).toFixed(1)+'%');
-      ov.style.setProperty('--fy', ((e.clientY-r.top)/r.height*100).toFixed(1)+'%');
-    });
-  })();
 
   /* ── SCROLL REVEALS ── */
   if (!reduced && 'IntersectionObserver' in window) {
@@ -1208,7 +1046,6 @@ document.addEventListener('keydown', function(e) {
   try {
     console.log('%c NAKUL IYER ','background:#FFB370;color:#2A1F1A;font-family:monospace;font-size:20px;font-weight:bold;padding:8px 20px;border-radius:3px;');
     console.log('%c\u{1F44B} Hey developer! Reach me at iyer251@purdue.edu','color:#5A4A40;font-size:12px;font-family:monospace;');
-    console.log('%c\u{1F3AE} Try the Konami code: ↑↑↓↓←→←→BA','color:#A8B5FF;font-size:11px;font-family:monospace;');
   } catch(e) {}
 
 })();
