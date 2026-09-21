@@ -27,6 +27,12 @@ const contact = [
     external: true,
   },
   {
+    label: "Devpost",
+    value: profile.devpostLabel,
+    href: profile.devpost,
+    external: true,
+  },
+  {
     label: "Resume",
     value: "Download PDF",
     href: profile.resume,

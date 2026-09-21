@@ -5,9 +5,12 @@ export const profile = {
   email: "iyer251@purdue.edu",
   phone: "908-477-4917",
   phoneHref: "tel:9084774917",
+  githubUser: "naks123",
   github: "https://github.com/naks123",
   githubLabel: "github.com/naks123",
-  linkedin: "https://linkedin.com/in/iyernakul/",
+  linkedin: "https://www.linkedin.com/in/iyernakul/",
   linkedinLabel: "linkedin.com/in/iyernakul",
+  devpost: "https://devpost.com/iyerrnakul",
+  devpostLabel: "devpost.com/iyerrnakul",
   resume: "/Iyer_Nakul.pdf",
 } as const;
