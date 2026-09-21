@@ -1,5 +1,7 @@
 import Link from "next/link";
+import GitHubActivity from "@/components/GitHubActivity";
 import ProjectCard from "@/components/ProjectCard";
+import SocialLinks from "@/components/SocialLinks";
 import { experience } from "@/content/experience";
 import { projects } from "@/content/projects";
 import { profile } from "@/content/profile";
@@ -15,21 +17,16 @@ export default function Home() {
         </h1>
         <p className="mt-3 text-lg text-soft">{profile.headline}</p>
 
-        <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-4">
           <a
-            className="rounded-md border border-ink px-4 py-2 transition-colors duration-150 hover:bg-warm"
+            className="rounded-md border border-ink px-4 py-2 text-sm transition-colors duration-150 hover:bg-warm"
             href={profile.resume}
             target="_blank"
             rel="noopener noreferrer"
           >
             Resume ↗
           </a>
-          <a
-            className="self-center text-soft transition-colors duration-150 hover:text-ink"
-            href={`mailto:${profile.email}`}
-          >
-            {profile.email}
-          </a>
+          <SocialLinks />
         </div>
       </section>
 
@@ -58,6 +55,8 @@ export default function Home() {
           All experience
         </Link>
       </section>
+
+      <GitHubActivity />
 
       <section>
         <h2 className="text-xs uppercase tracking-widest text-soft">

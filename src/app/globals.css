@@ -11,6 +11,13 @@
   --color-fresh: #b8e6d2;
   --color-spark: #ffe9a8;
   --color-line: rgba(42, 31, 26, 0.09);
+
+  /* Contribution heatmap: empty, then spark → warm → deep apricot. */
+  --color-gh-0: rgba(42, 31, 26, 0.07);
+  --color-gh-1: #ffe9a8;
+  --color-gh-2: #ffcf8a;
+  --color-gh-3: #ffb370;
+  --color-gh-4: #e0833a;
 }
 
 /* `inline` because the value points at a variable next/font defines on <html>. */
