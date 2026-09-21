@@ -2,7 +2,6 @@ import { TONES } from "@/components/AccentMark";
 import Container from "@/components/Container";
 import GitHubPreview from "@/components/GitHubPreview";
 import HeroBlobs from "@/components/HeroBlobs";
-import HeroVisual from "@/components/HeroVisual";
 import Marquee from "@/components/Marquee";
 import Pill from "@/components/Pill";
 import ProjectCard from "@/components/ProjectCard";
@@ -39,7 +38,7 @@ export default function Home() {
               <SocialLinks variant="circle" githubPreview={<GitHubPreview />} />
             </div>
           </div>
-          <HeroVisual fallback={<HeroBlobs />} />
+          <HeroBlobs />
         </Container>
       </section>
 
