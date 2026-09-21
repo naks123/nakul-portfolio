@@ -29,14 +29,16 @@ src/
 │   │   └── [slug]/          # /projects/:slug  detail, statically generated
 │   ├── about/               # /about       education, skills, contact
 │   ├── not-found.tsx
-│   └── globals.css          # palette tokens + base styles
+│   └── globals.css          # design tokens, base styles, motion
 ├── components/              # presentational, no data of their own
-└── content/                 # the only place site content lives
-    ├── profile.ts
-    ├── experience.ts
-    ├── projects.ts
-    ├── education.ts
-    └── skills.ts
+├── content/                 # the only place site content lives
+│   ├── profile.ts
+│   ├── experience.ts
+│   ├── projects.ts
+│   ├── education.ts
+│   ├── skills.ts
+│   └── navigation.ts        # header + footer links
+└── lib/github.ts            # data for the GitHub hover card (revalidates hourly)
 ```
 
 **Content lives in `src/content`, never in components or pages.** Editing the
@@ -44,16 +46,36 @@ site means editing a typed object there. Adding a project to `projects.ts` gives
 it a card and its own statically generated `/projects/[slug]` page with no other
 changes.
 
-## Design constraints
+## Design system
 
-Carried over from the previous build; keep them when adding UI.
+Dark-first, restrained. Every visual value is a token at the top of
+`src/app/globals.css`; change it there and every component follows. Don't put
+hex values or one-off sizes in components.
 
-- One typeface (Outfit, self-hosted via `next/font`). No second family.
-- Palette tokens in `globals.css` are fixed: cream, cocoa, apricot, and the
-  three unused accents. Use them, don't add hex values in components.
-- Transitions 150–200ms, colour and opacity only. No transform hovers.
-- Border radius 6–8px. Shadows subtle or absent.
-- Spacing on the 4/8/12/16/24/32 scale (Tailwind's default steps).
+- **Color.** True black background; text in white at 100 / 70 / 50%
+  (`ink`, `ink-muted`, `ink-subtle`; all pass AA on black). Accents are yellow,
+  red, and blue, used for motion and small highlights, never large fills.
+  Only yellow is safe for text and focus rings; red and blue are decoration only.
+- **Type.** One family. Fluid scale: `text-display`, `text-h2`, `text-h3`,
+  `text-lead`, `text-body`, `text-label`.
+- **Shape.** Cards use `rounded-card` (24px) with a 1px `border-line`; buttons
+  are `Pill` (fully rounded).
+- **Motion.** Scroll reveals (`data-reveal`, or `data-reveal="words"` for
+  headings), the hero blobs, and the stack strip. All of it is scoped under
+  `.motion-ok`, which is only set when the visitor hasn't asked for reduced
+  motion, so reduced-motion and no-JavaScript visitors get a static page with
+  nothing hidden. The strip has a pause button.
+
+### Changing the font
+
+One place: the `next/font/google` import and the call in `src/app/layout.tsx`.
+Keep `variable: "--font-brand"` and nothing else needs to change. For example,
+to try Manrope:
+
+```ts
+import { Manrope } from "next/font/google";
+const brandFont = Manrope({ subsets: ["latin"], variable: "--font-brand", display: "swap" });
+```
 
 ## Resume
 
