@@ -6,8 +6,8 @@ type Blob = {
 };
 
 /* Three blurred orbs in the accent colors. Pure CSS: drift is the .blob
-   animation in globals.css, off under reduced motion. Sits beside the
-   headline, never behind it, so text contrast is unaffected. */
+   animation in globals.css, off under reduced motion. Now the fallback for
+   the WebGL ring (see HeroVisual): fills whatever box its parent gives it. */
 const BLOBS: Blob[] = [
   {
     className: "left-[6%] top-[8%] size-[64%] bg-radial from-accent-blue to-transparent to-70% opacity-90",
@@ -32,10 +32,7 @@ const BLOBS: Blob[] = [
 
 export default function HeroBlobs() {
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none relative mx-auto aspect-square w-full max-w-[15rem] sm:max-w-[24rem] lg:max-w-[32rem]"
-    >
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0">
       {BLOBS.map((blob, i) => (
         <span
           key={i}
