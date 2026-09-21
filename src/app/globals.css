@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+/* Palette carried over unchanged from the previous build. */
+@theme {
+  --color-bg: #f7f3ec;
+  --color-surf: #efe9dc;
+  --color-ink: #2a1f1a;
+  --color-soft: #5a4a40;
+  --color-warm: #ffb370;
+  --color-cool: #a8b5ff;
+  --color-fresh: #b8e6d2;
+  --color-spark: #ffe9a8;
+  --color-line: rgba(42, 31, 26, 0.09);
+}
+
+/* `inline` because the value points at a variable next/font defines on <html>. */
+@theme inline {
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--color-warm);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-warm);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+}
