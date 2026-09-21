@@ -17,15 +17,7 @@ export default function Home() {
         </h1>
         <p className="mt-3 text-lg text-soft">{profile.headline}</p>
 
-        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-4">
-          <a
-            className="rounded-md border border-ink px-4 py-2 text-sm transition-colors duration-150 hover:bg-warm"
-            href={profile.resume}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Resume ↗
-          </a>
+        <div className="mt-6">
           <SocialLinks githubPreview={<GitHubPreview />} />
         </div>
       </section>
@@ -65,6 +57,17 @@ export default function Home() {
             <ProjectCard key={project.slug} project={project} />
           ))}
         </div>
+      </section>
+
+      <section>
+        <a
+          className="inline-block rounded-md border border-ink px-4 py-2 text-sm transition-colors duration-150 hover:bg-warm"
+          href={profile.resume}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Resume ↗
+        </a>
       </section>
     </div>
   );
