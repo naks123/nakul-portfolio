@@ -3,8 +3,6 @@ export type Project = {
   name: string;
   summary: string;
   tech: string[];
-  start: string;
-  end: string;
   bullets: string[];
 };
 
@@ -16,8 +14,6 @@ export const projects: Project[] = [
     summary:
       "Monte Carlo VaR/ES engine with four pluggable simulation backends, two of them rank-based Stochastic Portfolio Theory models.",
     tech: ["Python", "NumPy", "SciPy", "pytest", "Streamlit"],
-    start: "Aug 2026",
-    end: "Present",
     bullets: [
       "Building a Monte Carlo VaR/ES engine generating 10,000+ path scenarios at 95%/99% confidence across four pluggable simulation backends (Cholesky-correlated Gaussian, historical bootstrap, and two rank-based models from Fernholz–Karatzas Stochastic Portfolio Theory), reporting confidence intervals on the VaR estimate itself.",
       "Encoded three closed-form theorem targets as failing tests before writing simulator code, with 200-case property tests per invariant; identified an off-diagonal covariance error in the leading open-source SPT implementation.",
@@ -29,8 +25,6 @@ export const projects: Project[] = [
     summary:
       "Web-based multidimensional reinforcement learning task. 216 trials per participant, deployed to 100+ participants via Prolific.",
     tech: ["Python", "JavaScript", "jsPsych", "Node.js"],
-    start: "Jun 2024",
-    end: "Aug 2024",
     bullets: [
       "Built a web-based multidimensional reinforcement learning task in JavaScript using jsPsych where participants completed 216 trials each to learn reward rules that were changed between rounds.",
       "Engineered randomized experiment logic and data collection pipelines, implementing probabilistic reward schedules (80/20) and reaction time logging across 20,000+ trials, enabling precise measurement of learning performance.",

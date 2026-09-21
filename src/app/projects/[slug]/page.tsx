@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import Container from "@/components/Container";
+import Pill from "@/components/Pill";
+import SplitWords from "@/components/SplitWords";
 import TagList from "@/components/TagList";
 import { getProject, projects } from "@/content/projects";
 
@@ -26,33 +28,37 @@ export default async function ProjectPage({ params }: Params) {
   if (!project) notFound();
 
   return (
-    <article>
-      <Link
-        href="/projects"
-        className="text-sm text-soft underline underline-offset-4 transition-colors duration-150 hover:text-ink"
-      >
-        ← Projects
-      </Link>
+    <Container className="pb-(--space-section)">
+      <article>
+        <header className="pt-[clamp(3rem,8vw,6rem)] pb-[clamp(2.5rem,6vw,4rem)]">
+          <Pill href="/projects" variant="outline" size="sm">
+            ← Projects
+          </Pill>
+          <h1 data-reveal="words" className="mt-10 text-h2 font-medium">
+            <SplitWords text={project.name} />
+          </h1>
+          <p data-reveal className="mt-6 max-w-2xl text-lead text-ink-muted">
+            {project.summary}
+          </p>
+          <div data-reveal className="mt-8">
+            <TagList items={project.tech} />
+          </div>
+        </header>
 
-      <h1 className="mt-6 text-3xl font-semibold tracking-tight text-ink">
-        {project.name}
-      </h1>
-      <p className="mt-2 text-sm text-soft">
-        {project.start} — {project.end}
-      </p>
-
-      <div className="mt-4">
-        <TagList items={project.tech} />
-      </div>
-
-      <ul className="mt-8 flex flex-col gap-4 border-t border-line pt-8">
-        {project.bullets.map((bullet) => (
-          <li key={bullet} className="flex gap-3 leading-7 text-soft">
-            <span aria-hidden className="mt-3.5 h-px w-3 shrink-0 bg-warm" />
-            <span>{bullet}</span>
-          </li>
-        ))}
-      </ul>
-    </article>
+        <div
+          data-reveal
+          className="rounded-card border border-line bg-surface p-8 sm:p-10"
+        >
+          <ul className="flex flex-col gap-5">
+            {project.bullets.map((bullet) => (
+              <li key={bullet} className="flex gap-4 text-ink-muted">
+                <span aria-hidden="true" className="mt-[0.6em] size-1.5 shrink-0 rounded-full bg-accent-yellow" />
+                <span className="max-w-3xl">{bullet}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </article>
+    </Container>
   );
 }

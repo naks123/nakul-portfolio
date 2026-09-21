@@ -1,74 +1,98 @@
-import Link from "next/link";
+import { TONES } from "@/components/AccentMark";
+import Container from "@/components/Container";
 import GitHubPreview from "@/components/GitHubPreview";
+import HeroBlobs from "@/components/HeroBlobs";
+import Marquee from "@/components/Marquee";
+import Pill from "@/components/Pill";
 import ProjectCard from "@/components/ProjectCard";
 import SocialLinks from "@/components/SocialLinks";
+import SplitWords from "@/components/SplitWords";
+import Timeline from "@/components/Timeline";
 import { experience } from "@/content/experience";
-import { projects } from "@/content/projects";
 import { profile } from "@/content/profile";
+import { projects } from "@/content/projects";
+import { skills } from "@/content/skills";
 
-const current = experience.filter((item) => item.end === "Present");
+// Oldest first, so the numbered sequence reads as a timeline.
+const byStart = (s: string) => Date.parse(`1 ${s}`);
+const chronological = [...experience].sort((a, b) => byStart(a.start) - byStart(b.start));
+
+const stack = skills.flatMap((group) => group.items);
 
 export default function Home() {
   return (
-    <div className="flex flex-col gap-16">
-      <section>
-        <h1 className="text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
-          {profile.name}
-        </h1>
-        <p className="mt-3 text-lg text-soft">{profile.headline}</p>
-
-        <div className="mt-6">
-          <SocialLinks githubPreview={<GitHubPreview />} />
-        </div>
-      </section>
-
-      <section>
-        <h2 className="text-xs uppercase tracking-widest text-soft">
-          Currently
-        </h2>
-        <ul className="mt-4 flex flex-col">
-          {current.map((item) => (
-            <li
-              key={item.org}
-              className="flex flex-col gap-1 border-t border-line py-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+    <>
+      {/* Hero. overflow-x-clip (not hidden) keeps the blobs from widening the
+          page while still letting the GitHub hover card hang below. */}
+      <section className="overflow-x-clip">
+        <Container className="grid items-center gap-10 pt-[clamp(3.5rem,9vw,7rem)] pb-[clamp(3rem,8vw,6rem)] lg:grid-cols-[1.1fr_1fr]">
+          <div>
+            <h1 data-reveal="words" className="text-display font-medium">
+              <SplitWords text={profile.name} />
+            </h1>
+            <div
+              data-reveal
+              style={{ "--reveal-index": 3 } as React.CSSProperties}
+              className="mt-10 sm:mt-12"
             >
-              <div>
-                <p className="font-medium text-ink">{item.role}</p>
-                <p className="text-sm text-soft">{item.org}</p>
-              </div>
-              <p className="shrink-0 text-sm text-soft">{item.summary}</p>
-            </li>
-          ))}
-        </ul>
-        <Link
-          href="/experience"
-          className="mt-4 inline-block text-sm text-soft underline underline-offset-4 transition-colors duration-150 hover:text-ink"
-        >
-          All experience
-        </Link>
+              <SocialLinks variant="circle" githubPreview={<GitHubPreview />} />
+            </div>
+          </div>
+          <HeroBlobs />
+        </Container>
       </section>
 
-      <section>
-        <h2 className="text-xs uppercase tracking-widest text-soft">
-          Selected projects
-        </h2>
-        <div className="mt-4 grid gap-4">
-          {projects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
-          ))}
-        </div>
+      <Marquee items={stack} label="Tech stack" />
+
+      <section className="py-(--space-section)">
+        <Container>
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <h2 data-reveal="words" className="text-h2 font-medium">
+              <SplitWords text="Experience" />
+            </h2>
+            <div data-reveal>
+              <Pill href="/experience" variant="outline">
+                All experience
+              </Pill>
+            </div>
+          </div>
+          <Timeline items={chronological} />
+        </Container>
       </section>
 
-      <section>
-        <a
-          className="inline-block rounded-md border border-ink px-4 py-2 text-sm transition-colors duration-150 hover:bg-warm"
-          href={profile.resume}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Resume ↗
-        </a>
+      <section className="pb-(--space-section)">
+        <Container>
+          <h2 data-reveal="words" className="text-h2 font-medium">
+            <SplitWords text="Selected projects" />
+          </h2>
+          <div className="mt-12 grid gap-6 sm:mt-16 md:grid-cols-2">
+            {projects.map((project, i) => (
+              <ProjectCard
+                key={project.slug}
+                project={project}
+                tone={TONES[(i + 1) % TONES.length]}
+                index={i}
+              />
+            ))}
+          </div>
+        </Container>
       </section>
-    </div>
+
+      <section className="border-t border-line py-(--space-section)">
+        <Container className="flex flex-col items-start gap-10">
+          <h2 data-reveal="words" className="text-h2 font-medium">
+            <SplitWords text="Contact" />
+          </h2>
+          <div data-reveal className="flex flex-wrap gap-3">
+            <Pill href={profile.resume} external>
+              Resume ↗
+            </Pill>
+            <Pill href={`mailto:${profile.email}`} variant="outline">
+              {profile.email}
+            </Pill>
+          </div>
+        </Container>
+      </section>
+    </>
   );
 }

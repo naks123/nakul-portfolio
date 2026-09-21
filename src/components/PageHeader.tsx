@@ -1,14 +1,18 @@
+import SplitWords from "@/components/SplitWords";
+
 export default function PageHeader({
   title,
-  intro,
+  children,
 }: {
   title: string;
-  intro?: string;
+  children?: React.ReactNode;
 }) {
   return (
-    <div className="mb-10">
-      <h1 className="text-3xl font-semibold tracking-tight text-ink">{title}</h1>
-      {intro ? <p className="mt-3 max-w-xl text-soft">{intro}</p> : null}
-    </div>
+    <header className="pt-[clamp(4rem,10vw,7.5rem)] pb-[clamp(3rem,7vw,5rem)]">
+      <h1 data-reveal="words" className="text-display font-medium">
+        <SplitWords text={title} />
+      </h1>
+      {children}
+    </header>
   );
 }

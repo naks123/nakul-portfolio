@@ -18,17 +18,27 @@ const links = [
   { key: "mail", label: "Email", href: `mailto:${profile.email}` },
 ] as const;
 
+const LINK_CLASS = {
+  // Hero: each icon in a round outlined button.
+  circle:
+    "flex size-12 items-center justify-center rounded-full border border-line text-ink-muted transition-colors duration-(--duration-hover) hover:border-line-strong hover:bg-surface hover:text-ink",
+  // Footer: bare icons.
+  plain: "block text-ink-muted transition-colors duration-(--duration-hover) hover:text-ink",
+} as const;
+
 export default function SocialLinks({
   size = 20,
+  variant = "plain",
   githubPreview,
 }: {
   size?: number;
+  variant?: keyof typeof LINK_CLASS;
   /** Shown as a hover/focus card on the GitHub icon. Desktop only: touch
       devices have no hover, so there the icon is just a link. */
   githubPreview?: React.ReactNode;
 }) {
   return (
-    <ul className="flex items-center gap-4">
+    <ul className={`flex items-center ${variant === "circle" ? "gap-3" : "gap-5"}`}>
       {links.map(({ key, label, href }) => {
         const preview = key === "github" ? githubPreview : null;
 
@@ -41,7 +51,7 @@ export default function SocialLinks({
               {...(key === "mail"
                 ? {}
                 : { target: "_blank", rel: "noopener noreferrer" })}
-              className="block text-soft transition-colors duration-150 hover:text-ink"
+              className={LINK_CLASS[variant]}
             >
               <svg
                 role="img"
@@ -58,7 +68,7 @@ export default function SocialLinks({
             {preview ? (
               // pt-3 (not margin) bridges the gap, so moving the pointer from
               // the icon into the card doesn't cross dead space and close it.
-              <div className="invisible absolute top-full left-0 z-20 hidden pt-3 opacity-0 transition-[opacity,visibility] duration-150 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100 md:block">
+              <div className="invisible absolute top-full left-0 z-30 hidden pt-3 opacity-0 transition-[opacity,visibility] duration-200 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100 md:block">
                 {preview}
               </div>
             ) : null}

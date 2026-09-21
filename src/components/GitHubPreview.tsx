@@ -13,14 +13,14 @@ export default async function GitHubPreview() {
   if (!contributions) return null;
 
   return (
-    <div className="w-max rounded-lg border border-line bg-bg p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+    <div className="w-max rounded-[1.25rem] border border-line bg-surface p-5 text-left shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9)]">
       <div className="mb-3 flex items-baseline justify-between gap-6 text-xs">
         <span className="font-medium text-ink">@{profile.githubUser}</span>
         <a
           href={profile.github}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-soft underline underline-offset-4 transition-colors duration-150 hover:text-ink"
+          className="text-ink-muted underline underline-offset-4 transition-colors duration-(--duration-hover) hover:text-ink"
         >
           View profile ↗
         </a>
@@ -43,7 +43,7 @@ export default async function GitHubPreview() {
               >
                 {push.repo.split("/")[1] ?? push.repo}
               </a>
-              <span className="text-soft">{relativeDate(push.date)}</span>
+              <span className="text-ink-subtle">{relativeDate(push.date)}</span>
             </li>
           ))}
         </ul>

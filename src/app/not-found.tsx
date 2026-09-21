@@ -1,21 +1,14 @@
-import Link from "next/link";
+import Container from "@/components/Container";
+import Pill from "@/components/Pill";
 
 export default function NotFound() {
   return (
-    <div>
-      <h1 className="text-3xl font-semibold tracking-tight text-ink">
-        Page not found
-      </h1>
-      <p className="mt-3 text-soft">
-        That page doesn&apos;t exist.{" "}
-        <Link
-          href="/"
-          className="underline underline-offset-4 transition-colors duration-150 hover:text-ink"
-        >
-          Back home
-        </Link>
-        .
-      </p>
-    </div>
+    <Container className="flex min-h-[60vh] flex-col items-start justify-center gap-8 py-(--space-section)">
+      <p className="text-label text-ink-subtle uppercase">Error 404</p>
+      <h1 className="text-display font-medium">Page not found</h1>
+      <Pill href="/" variant="outline">
+        ← Back home
+      </Pill>
+    </Container>
   );
 }

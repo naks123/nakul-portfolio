@@ -44,7 +44,7 @@ export default function ContributionGraph({
       {/* Mobile: row-reverse makes the overflow start scrolled to the newest week. */}
       <div className="flex flex-row-reverse overflow-x-auto pb-2 sm:flex-row">
         <div className="shrink-0">
-          <div className="mb-1.5 flex gap-[2px] text-[10px] leading-none text-soft">
+          <div className="mb-1.5 flex gap-[2px] text-[10px] leading-none text-ink-subtle">
             {labels.map((label, i) => (
               <span key={i} className={`${labelWidth} overflow-visible whitespace-nowrap`}>
                 {label}
@@ -74,7 +74,7 @@ export default function ContributionGraph({
         </div>
       </div>
 
-      <figcaption className="mt-2 flex flex-wrap items-center justify-between gap-3 text-xs text-soft">
+      <figcaption className="mt-2 flex flex-wrap items-center justify-between gap-3 text-xs text-ink-muted">
         <span>{plural(data.total, "contribution")} in the last year</span>
         <span className="flex items-center gap-1.5" aria-hidden="true">
           Less

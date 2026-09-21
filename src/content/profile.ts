@@ -1,6 +1,5 @@
 export const profile = {
   name: "Nakul Iyer",
-  headline: "Computer Engineering at Purdue University",
   location: "West Lafayette, IN",
   email: "iyer251@purdue.edu",
   phone: "908-477-4917",
