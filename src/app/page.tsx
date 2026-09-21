@@ -1,5 +1,5 @@
 import Link from "next/link";
-import GitHubActivity from "@/components/GitHubActivity";
+import GitHubPreview from "@/components/GitHubPreview";
 import ProjectCard from "@/components/ProjectCard";
 import SocialLinks from "@/components/SocialLinks";
 import { experience } from "@/content/experience";
@@ -26,7 +26,7 @@ export default function Home() {
           >
             Resume ↗
           </a>
-          <SocialLinks />
+          <SocialLinks githubPreview={<GitHubPreview />} />
         </div>
       </section>
 
@@ -55,8 +55,6 @@ export default function Home() {
           All experience
         </Link>
       </section>
-
-      <GitHubActivity />
 
       <section>
         <h2 className="text-xs uppercase tracking-widest text-soft">

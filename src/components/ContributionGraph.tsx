@@ -2,6 +2,10 @@ import type { Contributions } from "@/lib/github";
 
 // Full class strings so Tailwind can find them statically.
 const LEVEL = ["bg-gh-0", "bg-gh-1", "bg-gh-2", "bg-gh-3", "bg-gh-4"];
+const SIZE = {
+  md: { cell: "h-[10px] w-[10px]", label: "w-[10px]" },
+  sm: { cell: "h-[8px] w-[8px]", label: "w-[8px]" },
+} as const;
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 /* One label per column where a new month starts, skipping any that would
@@ -25,8 +29,15 @@ function plural(n: number, word: string) {
   return `${n} ${word}${n === 1 ? "" : "s"}`;
 }
 
-export default function ContributionGraph({ data }: { data: Contributions }) {
+export default function ContributionGraph({
+  data,
+  size = "md",
+}: {
+  data: Contributions;
+  size?: keyof typeof SIZE;
+}) {
   const labels = monthLabels(data.weeks);
+  const { cell, label: labelWidth } = SIZE[size];
 
   return (
     <figure>
@@ -35,7 +46,7 @@ export default function ContributionGraph({ data }: { data: Contributions }) {
         <div className="shrink-0">
           <div className="mb-1.5 flex gap-[2px] text-[10px] leading-none text-soft">
             {labels.map((label, i) => (
-              <span key={i} className="w-[10px] overflow-visible whitespace-nowrap">
+              <span key={i} className={`${labelWidth} overflow-visible whitespace-nowrap`}>
                 {label}
               </span>
             ))}
@@ -52,7 +63,7 @@ export default function ContributionGraph({ data }: { data: Contributions }) {
                   <div
                     key={j}
                     title={day ? `${plural(day.count, "contribution")} on ${day.date}` : undefined}
-                    className={`h-[10px] w-[10px] rounded-[2px] ${
+                    className={`${cell} rounded-[2px] ${
                       day ? LEVEL[Math.min(day.level, 4)] : "bg-transparent"
                     }`}
                   />
@@ -68,7 +79,7 @@ export default function ContributionGraph({ data }: { data: Contributions }) {
         <span className="flex items-center gap-1.5" aria-hidden="true">
           Less
           {LEVEL.map((cls) => (
-            <span key={cls} className={`h-[10px] w-[10px] rounded-[2px] ${cls}`} />
+            <span key={cls} className={`${cell} rounded-[2px] ${cls}`} />
           ))}
           More
         </span>

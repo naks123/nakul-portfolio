@@ -18,33 +18,53 @@ const links = [
   { key: "mail", label: "Email", href: `mailto:${profile.email}` },
 ] as const;
 
-export default function SocialLinks({ size = 20 }: { size?: number }) {
+export default function SocialLinks({
+  size = 20,
+  githubPreview,
+}: {
+  size?: number;
+  /** Shown as a hover/focus card on the GitHub icon. Desktop only: touch
+      devices have no hover, so there the icon is just a link. */
+  githubPreview?: React.ReactNode;
+}) {
   return (
     <ul className="flex items-center gap-4">
-      {links.map(({ key, label, href }) => (
-        <li key={key}>
-          <a
-            href={href}
-            aria-label={label}
-            title={label}
-            {...(key === "mail"
-              ? {}
-              : { target: "_blank", rel: "noopener noreferrer" })}
-            className="block text-soft transition-colors duration-150 hover:text-ink"
-          >
-            <svg
-              role="img"
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              width={size}
-              height={size}
-              fill="currentColor"
+      {links.map(({ key, label, href }) => {
+        const preview = key === "github" ? githubPreview : null;
+
+        return (
+          <li key={key} className={preview ? "group relative" : undefined}>
+            <a
+              href={href}
+              aria-label={label}
+              title={preview ? undefined : label}
+              {...(key === "mail"
+                ? {}
+                : { target: "_blank", rel: "noopener noreferrer" })}
+              className="block text-soft transition-colors duration-150 hover:text-ink"
             >
-              <path d={ICONS[key]} />
-            </svg>
-          </a>
-        </li>
-      ))}
+              <svg
+                role="img"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                width={size}
+                height={size}
+                fill="currentColor"
+              >
+                <path d={ICONS[key]} />
+              </svg>
+            </a>
+
+            {preview ? (
+              // pt-3 (not margin) bridges the gap, so moving the pointer from
+              // the icon into the card doesn't cross dead space and close it.
+              <div className="invisible absolute top-full left-0 z-20 hidden pt-3 opacity-0 transition-[opacity,visibility] duration-150 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100 md:block">
+                {preview}
+              </div>
+            ) : null}
+          </li>
+        );
+      })}
     </ul>
   );
 }
