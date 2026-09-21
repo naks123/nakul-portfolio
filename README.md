@@ -61,7 +61,10 @@ hex values or one-off sizes in components.
 - **Shape.** Cards use `rounded-card` (24px) with a 1px `border-line`; buttons
   are `Pill` (fully rounded).
 - **Motion.** Scroll reveals (`data-reveal`, or `data-reveal="words"` for
-  headings), the hero blobs, and the stack strip. All of it is scoped under
+  headings), the hero ring, and the stack strip. The ring is one WebGL shader
+  in `src/lib/heroRing.ts` (no 3D library), colored from the accent tokens. It
+  pauses offscreen, caps at 30fps on phones, draws a single still frame under
+  reduced motion, and falls back to the CSS blobs (`HeroBlobs`) without WebGL. All of it is scoped under
   `.motion-ok`, which is only set when the visitor hasn't asked for reduced
   motion, so reduced-motion and no-JavaScript visitors get a static page with
   nothing hidden. The strip has a pause button.
